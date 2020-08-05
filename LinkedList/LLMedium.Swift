@@ -135,3 +135,42 @@ func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
     }
     return dummy.next
 }
+
+/*
+ hold prev of tail, tail is starting point of reverse (mth node)
+ use slidning window to reverse ( prev, cur, next)
+ connect cur to tail next and then prev of tail as head or just prev
+ */
+func reverseBetween(_ head: ListNode?, _ m: Int, _ n: Int) -> ListNode? {
+    guard let _head = head else { return nil }
+    var cur: ListNode? = _head
+    var prev: ListNode? = nil
+    var m = m
+    var n = n
+
+    while m > 1 {
+        prev = cur
+        cur = cur?.next
+        m -= 1
+        n -= 1
+    }
+    
+    let bef: ListNode? = prev
+    let tail: ListNode? = cur
+    
+    while n > 0 {
+        n -= 1
+        let third = cur?.next
+        cur?.next = prev
+        prev = cur
+        cur = third
+    }
+    tail?.next = cur
+    if bef == nil {
+        return prev
+    } else {
+        bef?.next = prev
+    }
+    return _head
+}
+
